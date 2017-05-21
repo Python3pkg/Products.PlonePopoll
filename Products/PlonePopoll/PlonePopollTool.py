@@ -32,9 +32,9 @@ from AccessControl import ClassSecurityInfo
 from Products.CMFCore import permissions as CMFCorePermissions
 from Products.PageTemplates.PageTemplateFile import PageTemplateFile
 
-from PlonePopollBackend import PlonePopollZODBBackend as BackendClass
+from .PlonePopollBackend import PlonePopollZODBBackend as BackendClass
 
-from config import PlonePopoll_votePermission
+from .config import PlonePopoll_votePermission
 from Products.PlonePopoll import logger
 
 class PlonePopollTool(UniqueObject, ObjectManager.ObjectManager, SimpleItem):
@@ -108,7 +108,7 @@ class PlonePopollTool(UniqueObject, ObjectManager.ObjectManager, SimpleItem):
             if not mtool.isAnonymousUser():
                 unicity = mtool.getAuthenticatedMember().getUserName()
         except:
-            raise NameError, 'unicity' + unicity
+            raise NameError('unicity' + unicity)
             logger.error("Unable to find username %s", exc_info=True)
             pass
 
@@ -116,7 +116,7 @@ class PlonePopollTool(UniqueObject, ObjectManager.ObjectManager, SimpleItem):
         # in a cookie
         logger.debug("Computing unicity")
         if not unicity:
-            if self.REQUEST.has_key('AnonymousVoted%s' % (poll_id)):
+            if 'AnonymousVoted%s' % (poll_id) in self.REQUEST:
                 unicity = self.REQUEST['AnonymousVoted%s' % (poll_id)]
             elif create:
                 unicity = int(time.time() * 10000000) + random.randint(0,99)
@@ -142,7 +142,7 @@ class PlonePopollTool(UniqueObject, ObjectManager.ObjectManager, SimpleItem):
         Configure PlonePopoll portlet
         """
         conf = getattr(self, 'portlet_configuration')
-        for k, v in kwargs.items():
+        for k, v in list(kwargs.items()):
             conf[k] = v
 
     def getPortletConfiguration(self, key):

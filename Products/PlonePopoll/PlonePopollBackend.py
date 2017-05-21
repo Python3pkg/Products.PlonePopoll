@@ -67,7 +67,7 @@ class PlonePopollBackend(OFS.SimpleItem.SimpleItem):
         unicity_factor is a parameter that should be unique to each user. It's the way to keep track
         of multiple votes by a same person.
         """
-        raise NotImplementedError, "Has to be redefined in subclasses"
+        raise NotImplementedError("Has to be redefined in subclasses")
 
 
     def getResults(self):
@@ -77,7 +77,7 @@ class PlonePopollBackend(OFS.SimpleItem.SimpleItem):
         id: {count: 0,},
         }
         """
-        raise NotImplementedError, "Has to be redefined in subclasses"
+        raise NotImplementedError("Has to be redefined in subclasses")
 
 
 
@@ -122,10 +122,10 @@ class PlonePopollZODBBackend(PlonePopollBackend):
         vote
         """
         # Record the vote in the _results dictionary
-        if not self._results.has_key(poll_id):
+        if poll_id not in self._results:
             self._results[poll_id] = {}
 
-        if not self._results.has_key(poll_id) or not self._results[poll_id].has_key(unicity_factor) :
+        if poll_id not in self._results or unicity_factor not in self._results[poll_id] :
             self._results[poll_id][unicity_factor] = []
 
         self._results[poll_id][unicity_factor].append(choice)
@@ -141,7 +141,7 @@ class PlonePopollZODBBackend(PlonePopollBackend):
         hasAlreadyVoted(self, unicity_factor) => return 1 if unicity_factor is already in the database
         """
         r = self._getResults()
-        return r.get(poll_id, {}).has_key(unicity_factor)
+        return unicity_factor in r.get(poll_id, {})
 
     def _getResults(self):
         """
@@ -155,10 +155,10 @@ class PlonePopollZODBBackend(PlonePopollBackend):
         getResults(self) -> dict {choice: {'count': count}}
         """
         ret = {}
-        poll_results = self._results.get(poll_id, {}).items()
+        poll_results = list(self._results.get(poll_id, {}).items())
         for user, choices in poll_results :
             for choice in choices:
-                if not ret.has_key(choice):
+                if choice not in ret:
                     ret[choice] = {'count': 1}
                 else:
                     ret[choice]['count'] += 1
@@ -178,7 +178,7 @@ class PlonePopollZODBBackend(PlonePopollBackend):
         getPersonVoteCount(self, poll_id) -> int person count
         """
         ret = 0
-        if not self._results.has_key(poll_id):
+        if poll_id not in self._results:
             return ret
         else:
             return len(self._results[poll_id])
@@ -330,7 +330,7 @@ def manage_addPlonePopollZODBBackend(self, REQUEST={}, **ignored):
                    message='This object already contains a PlonePopollBackend',
                    action ='%s/manage_main' % REQUEST['URL1'])
     self.PlonePopollBackend._post_init()
-    if REQUEST.has_key('RESPONSE'):
+    if 'RESPONSE' in REQUEST:
         REQUEST['RESPONSE'].redirect(self.absolute_url() + '/manage_main')
 
 
@@ -343,7 +343,7 @@ def manage_addPlonePopollZSQLBackend(self, REQUEST={}, **ignored):
                    message='This object already contains a PlonePopollBackend',
                    action ='%s/manage_main' % REQUEST['URL1'])
     self.PlonePopollBackend._post_init()
-    if REQUEST.has_key('RESPONSE'):
+    if 'RESPONSE' in REQUEST:
         REQUEST['RESPONSE'].redirect(self.absolute_url() + '/manage_main')
 
 

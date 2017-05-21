@@ -25,7 +25,7 @@ It will be removed in the future.
 __docformat__ = 'restructuredtext'
 
 # Python imports
-from StringIO import StringIO
+from io import StringIO
 try:
    from persistent.mapping import PersistentMapping
 except ImportError:
@@ -158,7 +158,7 @@ def install_configlet(self, out):
     try:
         portal_conf=getToolByName(self,'portal_controlpanel')
     except AttributeError:
-        print >>out, "Configlet could not be installed"
+        print("Configlet could not be installed", file=out)
         return
     try:
         portal_conf.registerConfiglet(**prefs_plonepopoll_configlet)
@@ -184,7 +184,7 @@ def DEPRECATED_uninstall(self):
             current.remove(portlet_popoll)
         self.manage_changeProperties(**{'right_slots' : current})
 
-    print >> out, "Successfully uninstalled %s." % PROJECTNAME
+    print("Successfully uninstalled %s." % PROJECTNAME, file=out)
     return out.getvalue()
 
 def uninstall_tool(self, out):
@@ -193,7 +193,7 @@ def uninstall_tool(self, out):
     except:
         pass
     else:
-        print >>out, "PlonePopoll tool removed"
+        print("PlonePopoll tool removed", file=out)
 
 def doMigration(self, backend):
     """

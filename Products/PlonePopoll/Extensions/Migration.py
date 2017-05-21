@@ -29,11 +29,11 @@ from Persistence import PersistentMapping
 from Acquisition import aq_base
 
 def migrateToArchetypes(self, REQUEST=None):
-    print """
+    print("""
     -------------------------------------------------
         Execute migration from old CMF PlonePopoll
         to the new archetypes one
-    """
+    """)
     nb_updated = 0
     #Check if it is needed to migrate to Archetypes
     pcatalog = getToolByName(self, 'portal_catalog')
@@ -96,7 +96,7 @@ def updateObject(old_poll):
             new_poll,  getattr(old_poll, '_visibility') == 'visible'
          )
 
-    for attribute in attributes.keys():
+    for attribute in list(attributes.keys()):
         if hasattr(old_poll, attribute):
             new_poll.getField(attributes[attribute]).set(new_poll, getattr(old_poll, attribute))
 
@@ -104,7 +104,7 @@ def copyPermMap(old):
     """bullet proof copy
     """
     new = PersistentMapping()
-    for k,v in old.items():
+    for k,v in list(old.items()):
         nk = copy(k)
         nv = copy(v)
         new[k] = v

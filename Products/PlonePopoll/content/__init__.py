@@ -22,6 +22,6 @@ Content type subpackage
 
 __docformat__ = 'restructuredtext'
 
-import PlonePopoll
+from . import PlonePopoll
 import sys
 sys.modules['Products.PlonePopoll.PlonePopoll'] = PlonePopoll

@@ -46,15 +46,15 @@ class IPopollPortlet(IPortletDataProvider):
     """Portlet configuration data model"""
 
     selection_mode = schema.Choice(
-        title=_(u'label_plonepopoll_portlet_configuration'),
-        description=_(u'help_plonepopoll_portlet_configuration'),
+        title=_('label_plonepopoll_portlet_configuration'),
+        description=_('help_plonepopoll_portlet_configuration'),
         vocabulary="popoll.portlet.pollselection"
         )
 
 
     number_of_polls = schema.Int(
-        title=_(u'label_plonepopoll_portlet_configuration_number_of_polls'),
-        description=_(u'help_plonepopoll_portlet_configuration_number_of_polls'),
+        title=_('label_plonepopoll_portlet_configuration_number_of_polls'),
+        description=_('help_plonepopoll_portlet_configuration_number_of_polls'),
         required=True,
         default=5
         )
@@ -72,10 +72,10 @@ class SourcesVocabulary(object):
 
         # Basic options
         voc  = [
-            SimpleTerm('hidden', title=_(u'label_portlet_configuration_hidden', default=u"Hidden")),
-            SimpleTerm('newest', title=_(u'label_portlet_configuration_newest', default=u"Newest")),
-            SimpleTerm('branch', title=_(u'label_portlet_configuration_branch', default=u"Branch")),
-            SimpleTerm('subbranches', title=_(u'label_portlet_configuration_subbranches', default="Subbranches"))
+            SimpleTerm('hidden', title=_('label_portlet_configuration_hidden', default="Hidden")),
+            SimpleTerm('newest', title=_('label_portlet_configuration_newest', default="Newest")),
+            SimpleTerm('branch', title=_('label_portlet_configuration_branch', default="Branch")),
+            SimpleTerm('subbranches', title=_('label_portlet_configuration_subbranches', default="Subbranches"))
             ]
 
         # Adding existing polls
@@ -101,7 +101,7 @@ class Assignment(base.Assignment):
 
     @property
     def title(self):
-        return _(u'heading_portlet_polls')
+        return _('heading_portlet_polls')
 
 
 class Renderer(base.Renderer):
@@ -202,8 +202,8 @@ class AddForm(base.AddForm):
 
     form_fields = form.Fields(IPopollPortlet)
 
-    label = _(u"add_portlet")
-    description = _(u"desc_portlet")
+    label = _("add_portlet")
+    description = _("desc_portlet")
 
     def create(self, data):
         return Assignment(
@@ -216,6 +216,6 @@ class EditForm(base.EditForm):
     """Edit form for our portlet"""
 
     form_fields = form.Fields(IPopollPortlet)
-    label = _(u"edit_portlet")
-    description = _(u"desc_portlet")
+    label = _("edit_portlet")
+    description = _("desc_portlet")
 

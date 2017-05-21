@@ -125,7 +125,7 @@ class PlonePopoll(atct.ATCTContent):
         - Include all the necessary code to pseudo-guarantee the unicity of the vote.
         """
         if not self.isEnabled():
-            raise RuntimeError, "This poll is not active."
+            raise RuntimeError("This poll is not active.")
         if self.hasVoted():
             self.removeUserVote()
 
@@ -153,19 +153,19 @@ class PlonePopoll(atct.ATCTContent):
                 unicity = portal_popoll.getVoteUnicity(self.getVoteId(), create=1)
                 if type(choices) is str:
                     if int(choices) < 0:
-                        raise ValueError, "Invalid choice"
+                        raise ValueError("Invalid choice")
                     portal_popoll.getBackend().vote(self.getVoteId(), int(choices), unicity)
                 else:
                     for choice in choices:
                         # Check that choice is valid
                         if int(choice) >= len(self.choices) or int(choice) < 0:
-                            raise ValueError, "Invalid choice"
+                            raise ValueError("Invalid choice")
                         # Call the method in the backend to store the vote
                         portal_popoll.getBackend().vote(self.getVoteId(), int(choice), unicity)
                 msgstr = "Vote has been saved."
                 msgid = "vote_saved"
 
-        message = _(unicode(msgid), default=unicode(msgstr), mapping={'checked': checkedCount, 'max': max_votes})
+        message = _(str(msgid), default=str(msgstr), mapping={'checked': checkedCount, 'max': max_votes})
         plone_utils = getToolByName(self, 'plone_utils')
         plone_utils.addPortalMessage(message)
         if redirect:
@@ -206,7 +206,7 @@ class PlonePopoll(atct.ATCTContent):
         idx = 0
         for id in self.choices[:]:
             # If a choice has not been selected, it is not in res!
-            if not res.has_key(idx):
+            if idx not in res:
                 ret.append((id, 0))
             else:
                 votes_count += res[idx]['count']
